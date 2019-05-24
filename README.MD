@@ -9,3 +9,6 @@ Here is how the game works:
 - If the snake eats a food with the same color of the head, the head disappear and, therefore, the snake will be reduced.
 - If the snake eats a food with a different color of the head, then this food will became a part of the snake as an element of the tail.
 - The score will be a function based on the size of the snake and the time that the snake is running.
+---
+To handle graphical interface, the Raylib library was chosen
+[Raylib by raysan5 on GitHub] (https://github.com/raysan5/raylib "RayLib GitHub repository")
