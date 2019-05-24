@@ -11,4 +11,4 @@ Here is how the game works:
 - The score will be a function based on the size of the snake and the time that the snake is running.
 ---
 To handle graphical interface, the Raylib library was chosen
-[Raylib by raysan5 on GitHub] (https://github.com/raysan5/raylib "RayLib GitHub repository")
+[Raylib by raysan5 on GitHub](https://github.com/raysan5/raylib "RayLib GitHub repository")
