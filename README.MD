@@ -4,7 +4,7 @@
 ---
 Here is how the game works:
 - At the start of the game, the snake starts with 3 elements: A head and 2 parts of tail
-- Each part of the snake have one of the following colors: red, orange, yellow, green , light blue, dark blue and violet
+- Each part of the snake have one of the 7 following colors: red, orange, yellow, green, light blue, dark blue and violet
 - Every moment will spawn 2 kinds of "food" to the snake. One of the foods will be the same color as the head and the other food will be one of the random colors from above.
 - If the snake eats a food with the same color of the head, the head disappear and, therefore, the snake will be reduced.
 - If the snake eats a food with a different color of the head, then this food will became a part of the snake as an element of the tail.
