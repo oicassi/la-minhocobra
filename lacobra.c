@@ -1,14 +1,9 @@
-/*******************************************************************************************
+/* ESTRUTURA DE DADOS 1
+*  Trabalho Snake
+*  La-Cobra
+*  Alunos: André Klingenfus Antunes & Cassiano Kruchelski Vidal
 *
-*   raylib [core] example - Keyboard input
-*
-*   This example has been created using raylib 1.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
-*
-*   Copyright (c) 2014 Ramon Santamaria (@raysan5)
-*
-********************************************************************************************/
-
+*/
 /*******************************************************************
 *
 *	Mais importante de tudo. Como executar as coisas:
@@ -19,6 +14,7 @@
 *	3) vlw eh nós
 *
 ********************************************************************/
+
 
 #include "raylib.h"
 #include <stdio.h>
