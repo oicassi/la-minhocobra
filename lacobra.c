@@ -20,7 +20,7 @@
 #include <time.h>
 #define WIDTH 1000
 #define HEIGHT 600
-#define TAMANHOMAX 300
+#define TAMANHOMAX 50
 #define TAMANHOINICIAL 3
 #define GAMEFIRMA "4 NEVE(R)S GAMES!"
 
@@ -31,63 +31,80 @@ typedef struct _LACOBRA {
 } LACOBRA;
 
 // declaração das funções
-Color getColor(); // retorna aleatoriamente uma das cores possiveis para os elementos da cobra
-void initVars(LACOBRA *cobra, int *inicio, int *fim, int *tam, Texture2D *background); // inicializa as variáveis
+Color getColor(int i); // retorna aleatoriamente uma das cores possiveis para os elementos da cobra
+void initVars(LACOBRA *cobra, int *inicio, int *fim, int *tam); // inicializa as variáveis
 void gameIntro(); // introdução que mostra o nome da "empresa" de jogos (kkkkk)
 void moveCobra(LACOBRA *cobra, int direc, int inicio, int fim, int tam); // função que faz o movimento da cobra
-int controlCobra(int direc); // faz o controle de direção da cobra
 int colisionTest(LACOBRA *cobra, int inicio, int fim, int tam, int coli); // testa a colisão da cobra //TODO tirar o coli
-void insertFila(LACOBRA *cobra, int *inicio, int *fim, int *tam); // faz a inserção de um elemento na fila
+void insertFila(LACOBRA *cobra, int *inicio, int *fim, int *tam, Color coraux); // faz a inserção de um elemento na fila
 void removeFila(LACOBRA *cobra, int *inicio, int *fim, int *tam); // remove o elemento mais antigo da fila
 
 int main(int argc, char *argv[]) {
+    // inicializações da tela e do áudio
+    InitWindow(WIDTH, HEIGHT, "LACOBRA"); // inicialização da janela do jogo    
+    InitAudioDevice(); // inicialização do sistema de áudio
+
     // variáveis
-    int screenWidth = WIDTH; // largura da tela
-    int screenHeight = HEIGHT; // altura da tela
     int direc = 0, i, spacing = 0; 
     // direc é a variável que indica a direção do movimento 
     // spacing define um espaçamento entre um elemento da cobra e outro
     int fim, inicio, tam; // fim, inicio e tam são as variáveis que controlam a fila
-    LACOBRA cobra[TAMANHOMAX];
-    Texture2D background;
     int colision = 0; // variavel para controlar a colisao //TODO possivelmente isso vai sair
     int j, c;
-
-    InitWindow(screenWidth, screenHeight, "minhoquitos"); // inicialização da janela do jogo
-    InitAudioDevice(); // inicialização do sistema de áudio
-    initVars(cobra, &inicio, &fim, &tam, &background);
-    SetTargetFPS(20);   // Velocidade do jogo
+    LACOBRA cobra[TAMANHOMAX];
+    Texture2D background = LoadTexture("resources/fundolindo.png");
+    
+    initVars(cobra, &inicio, &fim, &tam); // inicializa as variávies
+    SetTargetFPS(15);   // Velocidade do jogo
 
 // +---------------------------- INTRODUÇÃO DO JOGO ------------------------------+//
     gameIntro();
-
 // +-------------------- INÍCIO DO LOOP PRINCIPAL DO JOGO ------------------------+//
     while (!WindowShouldClose()) {    // Detect window close button or ESC key
-        colision = colisionTest(cobra, inicio, fim, tam, colision);
-        direc = controlCobra(direc);
+        
+       colision = colisionTest(cobra, inicio, fim, tam, colision);
+
+       if (IsKeyDown(KEY_Q)) insertFila(cobra, &inicio, &fim, &tam, RED);
+       if (IsKeyDown(KEY_W)) insertFila(cobra, &inicio, &fim, &tam, GREEN);
+       // TODO ajeitar as condições para inserção da fila ser pela comida e nao por tecla
+
+       if (IsKeyDown(KEY_R)) removeFila(cobra, &inicio, &fim, &tam);
+       // TODO ajeitar as condições para remoção da fila ser pela comida e nao por tecla
+
+
+        if (IsKeyDown(KEY_RIGHT)) {
+            if (direc != 2) direc = 0;
+        } else if (IsKeyDown(KEY_LEFT)) {
+            if (direc != 0) direc = 2;
+        } else if (IsKeyDown(KEY_UP)) {
+            if (direc != 1) direc = 3;
+        } else if (IsKeyDown(KEY_DOWN)) {
+            if (direc != 3) direc = 1;
+        }
         moveCobra(cobra, direc, inicio, fim, tam);
         c = 0;
         j = inicio;
-        // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
-            DrawTextureEx(background, (Vector2){0, 0}, 0, 0, WHITE);
-           // ClearBackground((Color){ GetRandomValue(0, 255), GetRandomValue(0, 255), GetRandomValue(0, 255), 255 });
+            ClearBackground(GetColor(0x052c46ff));
+            DrawTextureEx(background, (Vector2){ 0.0f, 0 }, 0.0f, 1.0f, WHITE);
             if (colision == 1) {
                 DrawText("COLIDIU", 10, 10, 20, RED);
             }
             while (c < tam) {
                 if (j == TAMANHOMAX) j = 0;
-                DrawCircleV(cobra[j].pos, 10, cobra[i].cor);
+                DrawCircleV(cobra[j].pos, 10, cobra[j].cor);
                 c++;
                 j++;
             }
+           
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
+    UnloadTexture(background);
     CloseWindow();        // Fecha dispositivos de vídeo
     CloseAudioDevice();   // Fecha dispositivo de áudio
     //--------------------------------------------------------------------------------------
@@ -95,7 +112,7 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-Color getColor(){
+Color getColor(int i){
     /*  Os elementos da cobra podem ter 1 entre 7 cores possíveis, são elas:
     *   Vermelha, Laranja, Amarelo, Verde, Azul claro, Azul escuro e violeta.
     *   Essas cores já são pré definidas na biblioteca raylib. 
@@ -104,7 +121,7 @@ Color getColor(){
     */
     int corzinhaLinda;
     srand(time(NULL));
-    corzinhaLinda = rand() % 7 + 1;
+    corzinhaLinda = (rand() + i) % 7 + 1;
     switch(corzinhaLinda) {
         case (1): // Vermelho
             return RED;
@@ -133,7 +150,7 @@ Color getColor(){
     }
 }
 
-void initVars(LACOBRA *cobra, int *inicio, int *fim, int *tam, Texture2D *background) {
+void initVars(LACOBRA *cobra, int *inicio, int *fim, int *tam) {
     /*  A cobra vai inicar com 3 elementos: cabeça e mais 2 elementos do corpo
     *   Em termos de fila, a cabeça é o elemento mais antigo da fila e a ponta do corpo
     *   é o elemento mais novo. Assim sendo, a variável <inicio> indica a cabeça da cobra
@@ -146,22 +163,27 @@ void initVars(LACOBRA *cobra, int *inicio, int *fim, int *tam, Texture2D *backgr
     *   OBS2: se TAMANHOINICIAL for menor que 3 ou maior que 300, o código muda para o valor
     *   default de 3;
     */
-    int i, spacing = 0;
+    printf("Ram papapapam\n");
+    int i; 
+    float spacing = 0.0f;
     if ((TAMANHOINICIAL >= 3) && (TAMANHOINICIAL <= 300))(*tam) = TAMANHOINICIAL;
     else (*tam) = 3;
     (*inicio) = 0; // cabeça da cobra é o elemento do vetor indicado por <inicio>
     (*fim) = (*tam) - 1; // o último elemento do corpo da cobra é indicado por <fim>
-    (*background) = LoadTexture("resources/background.png");
     for (i = (*inicio); i <= (*fim); i++) {
-        cobra[i].cor = getColor();
+        cobra[i].cor = getColor(i);
     }
-    cobra[(*inicio)].pos.x = WIDTH / 2; // posição horizontal da cabeça da cobra no meio
-    cobra[(*inicio)].pos.y = HEIGHT / 2; // posição vertical da cabeça da cobra no meio
+    cobra[(*inicio)].pos.x = (float)WIDTH / 2; // posição horizontal da cabeça da cobra no meio
+    cobra[(*inicio)].pos.y = (float)HEIGHT / 2; // posição vertical da cabeça da cobra no meio
     spacing -= 20;
     for (i = 1; i <= (*fim); i++) {
-        cobra[i].pos.x = WIDTH / 2 + spacing;
-        cobra[i].pos.y = HEIGHT / 2;
+        cobra[i].pos.x = (float)WIDTH / 2 + spacing;
+        cobra[i].pos.y = (float)HEIGHT / 2;
         spacing -= 20;
+    }
+
+    for (i = (*inicio); i <= (*fim); i++) {
+        printf("Cobra %d: posx: %f e posy: %f\n", i, cobra[i].pos.x, cobra[i].pos.y);
     }
 }
 
@@ -224,33 +246,35 @@ void moveCobra(LACOBRA *cobra, int direc, int inicio, int fim, int tam) {
     switch (direc) {
         case 0: // direita
             aux1 = cobra[inicio].pos;
-            if (cobra[inicio].pos.x == WIDTH) cobra[inicio].pos.x = 0;
-            cobra[inicio].pos.x += 20;
+            if (cobra[inicio].pos.x == WIDTH) cobra[inicio].pos.x = 0.0f;
+            cobra[inicio].pos.x += 20.0f;
             while (cont < tam) {
                 i++;
                 if (i == TAMANHOMAX) i = 0;
                 aux2 = cobra[i].pos;
                 cobra[i].pos = aux1;
                 aux1 = aux2;
+                cont++;
             }
             break;
 
         case 1: // baixo
             aux1 = cobra[inicio].pos;
-            if (cobra[inicio].pos.y == HEIGHT) cobra[inicio].pos.y = 0;
-            cobra[inicio].pos.y += 20;
+            if (cobra[inicio].pos.y == HEIGHT) cobra[inicio].pos.y = 0.0f;
+            cobra[inicio].pos.y += 20.0f;
             while (cont < tam) {
                 i++;
                 if (i == TAMANHOMAX) i = 0;
                 aux2 = cobra[i].pos;
                 cobra[i].pos = aux1;
                 aux1 = aux2;
+                cont++;
             }
             break;
                 
         case 2: // esquerda
             aux1 = cobra[inicio].pos;
-            if (cobra[inicio].pos.x == 0) cobra[inicio].pos.x = WIDTH;
+            if (cobra[inicio].pos.x == 0.0f) cobra[inicio].pos.x = WIDTH;
             cobra[inicio].pos.x -= 20;
             while (cont < tam) {
                 i++;
@@ -258,12 +282,13 @@ void moveCobra(LACOBRA *cobra, int direc, int inicio, int fim, int tam) {
                 aux2 = cobra[i].pos;
                 cobra[i].pos = aux1;
                 aux1 = aux2;
+                cont++;
             }
             break;
 
         case 3: // cima
             aux1 = cobra[inicio].pos;
-            if (cobra[inicio].pos.y == 0) cobra[inicio].pos.y = HEIGHT;
+            if (cobra[inicio].pos.y == 0.0f) cobra[inicio].pos.y = HEIGHT;
             cobra[inicio].pos.y -= 20;
             while (cont < tam) {
                 i++;
@@ -271,28 +296,9 @@ void moveCobra(LACOBRA *cobra, int direc, int inicio, int fim, int tam) {
                 aux2 = cobra[i].pos;
                 cobra[i].pos = aux1;
                 aux1 = aux2;
+                cont++;
             }
             break;
-    }
-}
-
-int controlCobra(int direc) {
-    /*  A função recebe a variável <direc> apenas para saber qual é o sentido atual do 
-    *   movimento. Dependendo da tecla pressionada, <direc> assume um novo valor, sendo
-    *   que a associação é:
-    *   - 0 : direita
-    *   - 1 : baixo
-    *   - 2 : esquerda
-    *   - 3 : cima
-    */
-    if (IsKeyDown(KEY_RIGHT)) {
-        if (direc != 2) return 0;
-    } else if (IsKeyDown(KEY_LEFT)) {
-        if (direc != 0) return 2;
-    }else if (IsKeyDown(KEY_UP)) {
-        if (direc != 1) return 3;
-    }else if (IsKeyDown(KEY_DOWN)) {
-        if (direc != 3) return 1;
     }
 }
 
@@ -313,7 +319,39 @@ int colisionTest(LACOBRA *cobra, int inicio, int fim, int tam, int coli) {
         if (i == TAMANHOMAX) i = 0;
         if ((cobra[inicio].pos.x == cobra[i].pos.x) && (cobra[inicio].pos.y == cobra[i].pos.y)) return 1; // colisão retorna 1
         i++;
-        tam++;
+        cont++;
     }
     return coli;
+}
+
+void insertFila(LACOBRA *cobra, int *inicio, int *fim, int *tam, Color coraux) {
+    /*  A inserção aumenta o valor de <fim> e o valor de <tam>. Para executar a inserção, o
+    *   código primeiro testa a variável <tam> pra ver se ela não está no mesmo tamanho que
+    *   o valor máximo. Caso esteja, ela não executa. A função testa se o vaor de <fim> + 1 
+    *   está igual ao valor de TAMANHOMAX, caso esteja coloca <fim> como 1, pois aí significa
+    *   que já foi excluído alguma coisa e tem espaço no início do vetor da cobra.
+    */
+    if ((*tam) < TAMANHOMAX) {
+        (*fim) += 1;
+        if ((*fim) == TAMANHOMAX) (*fim) = 0;
+        cobra[(*fim)].cor = coraux;
+        (*tam)++;
+        printf("\nInserido na fila!\n");
+        printf("Valor de fim: %d e valor de tam: %d\n", (*fim), (*tam));
+    } else {
+        printf("\nNao inserido. fila cheia!\n");
+    }
+    // TODO remover as impressoes no console
+}
+
+void removeFila(LACOBRA *cobra, int *inicio, int *fim, int *tam) {
+    if ((*tam) > 1) {
+        (*inicio) += 1;
+        if ((*inicio) == TAMANHOMAX) (*inicio) = 0;
+        (*tam)--;
+        printf("\nRemovido da fila\n");
+        printf("\nValor de inicio: %d e valor de tam: %d\n", (*inicio), (*tam));
+    } else {
+        printf("\nNao foi removido pois a fila ta pequenina\n");
+    }
 }
