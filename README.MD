@@ -15,8 +15,8 @@ This game was made for evaluation purposes of the Data Structures Class of the T
 Made in collaboration with André Klingenfus Antunes [(André's Github Page)](https://github.com/andrekantunes) and using the amazing Raylib library from raysan5 [(raysan5's Raylib library on GitHub)](https://github.com/raysan5/raylib)  
 
 ## Installation/Execution instructions  
-In order to compile and/or execute the game, you need to install or build a static library fo Raylib (check the wiki in the raylib official repository page - [Working on macOS](https://github.com/raysan5/raylib/wiki/Working-on-macOS) and [working on GNU Linux](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux))
----
+In order to compile and/or execute the game, you need to install or build a static library fo Raylib (check the wiki in the raylib official repository page - [Working on macOS](https://github.com/raysan5/raylib/wiki/Working-on-macOS) and [working on GNU Linux](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux))  
+
 *NOTE: We didn't compile for Windows. The code probably will work "as is"  with the .mp3 files or .ogg files) but you must read the wiki on raylib repository about [Working on Windows](https://github.com/raysan5/raylib/wiki/Working-on-Windows). In this case, we can only wish you luck.*  
 
 ## Game instructions
