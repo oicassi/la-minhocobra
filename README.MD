@@ -26,15 +26,22 @@ If you get some sort of errors, try runing the make clean and after the make to 
 *NOTE: We didn't compile for Windows. The code probably will work "as is"  with the .mp3 files or .ogg files) but you must read the wiki on raylib repository about [Working on Windows](https://github.com/raysan5/raylib/wiki/Working-on-Windows). In this case, we can only wish you luck.*  
 
 ## Game instructions
-As in any other "Snake game", the player controls a snake that must "eat" foods spreaded out across the map. The difference here is that, depending on the color of the snake's head and the food that is trying to eat, the snake will reduce it's size or increase.
+As in any other "Snake game", the player controls a snake that must "eat" foods spreaded out across the map. The difference here is that, depending on the color of the snake's head and the food that is trying to eat, the snake will reduce it's size or increase.  
 
-Here is how the game works:
+### Step-by-step  
 - At the start of the game, the snake starts with 3 elements: A head and 2 parts of tail
 - Each part of the snake have one of the 7 following colors: red, orange, yellow, green, light blue, dark blue and violet
-- Every moment will spawn some kinds of "food" to the snake.At least one of the foods will be the same color as the head and the others food will be one of the random colors from above.
+- There will be some food (the amount is adjustable in the "define section" of the code (`#define MAXCOMIDA`) spreaded across the game map. At least one of the foods will be the same color as the head and the others food will be one of the random colors from above.
 - If the snake eats a food with the same color of the head, the head disappear and, therefore, the snake will be reduced.
 - If the snake eats a food with a different color of the head, then this food will became a part of the snake as an element of the tail.
-- The score will be a function based on the size of the snake and the time that the snake is running.
----
-To handle graphical interface, the Raylib library was chosen
-[Raylib by raysan5 on GitHub](https://github.com/raysan5/raylib "RayLib GitHub repository")
+- Everytime the snake eats a food, a new spawn of every food happens in random places across the map
+- The snake dies and it's game over if:
+1. The snake hits the blocks in the map
+2. The skane hits itself
+3. The snake size reachs zero
+- The score increase will be based on the size of the snake, for each food the snake eats, the score will increase by an amount that is equal the size of the snake
+*NOTE: if the snake eats a food that reduces it's size, there will be no changes in the score*  
+
+## Misc
+- It's possible to quit the game by any moment during the game by pressing the key "q"
+- The difficult levels vary by the speed of the snake

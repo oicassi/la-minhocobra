@@ -22,7 +22,7 @@
 #define HEIGHT 600 // altura da tela
 #define TAMANHOMAX 300 // tamanho máximo da cobra
 #define TAMANHOINICIAL 3 // tamanho inicial da cobra
-#define MAXCOMIDA 100 // quantidade de comidas que irao aparecer por vez
+#define MAXCOMIDA 10 // quantidade de comidas que irao aparecer por vez
 #define GAMEFIRMA "4 NEVE(R)S GAMES!" // nome da firma que faz o jogo
 #define RAIO 10
 
