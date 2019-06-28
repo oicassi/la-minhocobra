@@ -39,9 +39,10 @@ As in any other "Snake game", the player controls a snake that must "eat" foods 
 1. The snake hits the blocks in the map
 2. The skane hits itself
 3. The snake size reachs zero
-- The score increase will be based on the size of the snake, for each food the snake eats, the score will increase by an amount that is equal the size of the snake
+- The score increase will be based on the size of the snake, for each food the snake eats, the score will increase by an amount that is equal the size of the snake  
+
 *NOTE: if the snake eats a food that reduces it's size, there will be no changes in the score*  
 
 ## Misc
 - It's possible to quit the game by any moment during the game by pressing the key "q"
-- The difficult levels vary by the speed of the snake
+- The difficult levels changes the speed of the snake
