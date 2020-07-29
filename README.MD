@@ -1,7 +1,16 @@
 # LA MINHOCOBRA DEL ARCO-IRO  - A SNAKE GAME USING QUEUE DATA STRUCTURE
 ---
 ## Abstract  
-This is an implementation of the traditional snake game with a few differences using the C programming language and the Raylib game library. The motivation to make this game is to make use of the *queue datastructure*. In this version, the snake can grow or reduce it's size depending on the it's color and the color of the "food" that is passing above in the map.  
+This is an implementation of the traditional snake game with a few differences using the C programming language and the Raylib game library. The motivation to make this game is to make use of the *queue datastructure*. In this version, the snake can grow or reduce it's size depending on the it's color and the color of the "food" that is passing above in the map.
+
+## Overview
+### Here are some screenshots of the game
+
+Title screen
+![Title Screen](./show/title.png)
+
+In game screen
+![Title Screen](./show/game.png)
   
 ## Contents of the repository  
 This repository contains two main "parts":
